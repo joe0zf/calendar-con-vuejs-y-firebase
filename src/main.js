@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify';
 
 import firebase from 'firebase/app'
 import 'firebase/firestore';
+Vue.use(require('vue-moment'));
 
 const firebaseConfig = {
   apiKey: "AIzaSyCXj2xGLPIGZkH1c2WdjnFWraa2vdddgIw",
@@ -24,9 +25,15 @@ export const db = firebase.firestore();
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+firebase.auth().onAuthStateChanged(function(){
+  //console.log(user)
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
+  }).$mount('#app')
+
+})
+
+

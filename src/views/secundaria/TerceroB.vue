@@ -2,12 +2,12 @@
     <div>
         <v-card>
             <v-card-title>
-                Reporte de tareas de segundo B de secundaria
+                Reporte de tareas de tercero B de secundaria
             </v-card-title>
             <v-container >
                 <v-row justify="center">
                     <v-col cols="10">
-                        <calendar grupo="tareas2b"/>
+                        <calendar grupo="tareas3b"/>
                     </v-col>
                 </v-row>
                 

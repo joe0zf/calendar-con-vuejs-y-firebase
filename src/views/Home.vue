@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <v-container>
+      <v-row>
+        <v-col md="6">
+          <chart-sec/>
+        </v-col>
+      </v-row>
+    </v-container>
     
   </div>
 </template>
@@ -8,11 +14,11 @@
 <script>
 // @ is an alias to /src
 
-
+import ChartSec from '@/components/ChartSec.vue'
 export default {
   name: 'Home',
-  components: {
-    
+  components:{
+    ChartSec
   }
 }
 </script>

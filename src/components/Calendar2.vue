@@ -48,29 +48,29 @@
         </v-toolbar>
       </v-sheet>
       <v-sheet height="600">
-        <v-calendar
-            :weekdays="[0, 1, 2, 3, 4, 5, 6]"
+      <!--  <v-calendar
+            :weekdays="[1, 2, 3, 4, 5, 6, 0]"
             locale="es"
             :short-weekdays="false"
           ref="calendar"
           v-model="focus"
-          color="secondary"
+          color="primary"
           :events="events"
           :event-color="getEventColor"
-          
+          :now="today"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
-        ></v-calendar>
+          
+        ></v-calendar> -->
         <v-dialog v-model="dialog" max-width="700">
             <v-card>
                 <v-card-title>Registrar nueva tarea</v-card-title>
                 <v-container>
                     <v-row justify="center">
                         <v-col cols="8">
-                            <div >
+                            <v-form @submit.prevent="addTarea()">
                                 <v-text-field 
                                     label="Nombre del curso" 
                                     type="text" 
@@ -86,28 +86,13 @@
                                     type="date" 
                                     v-model="end">
                                 </v-text-field>
-
-                                <v-radio-group v-model="radioGroup" row label="Dificultad de la tarea: ">
-                                  <v-radio
-                        
-                                    label="Fácil"
-                                    value="facil"
-                                  ></v-radio>
-                                  <v-radio
-                        
-                                    label="Medio"
-                                    value="medio"
-                                  ></v-radio>
-                                  <v-radio
-                        
-                                    label="Dificil"
-                                    value="dificil"
-                                    
-                                  ></v-radio>
-                                </v-radio-group>
-                                
-                                <v-btn type="submit" color="green" dark block @click.stop="addTarea()" >Agregar</v-btn>
-                            </div>
+                                <v-text-field 
+                                    label="Color de la tarea" 
+                                    type="color" 
+                                    v-model="color">
+                                </v-text-field>
+                                <v-btn type="submit" color="green" dark block @click.stop="dialog = false" >Agregar</v-btn>
+                            </v-form>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -129,18 +114,20 @@
               :color="selectedEvent.color"
               dark
             >
-              
+              <v-btn icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-              
+              <v-btn icon>
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
             </v-toolbar>
             <v-card-text>
-              <div>Autor: {{selectedEvent.author}}</div>
-              <div> fecha inicio: {{selectedEvent.start | moment('DD-MM-YYYY')}}</div>
-              <div> fecha fin: {{selectedEvent.end | moment('DD-MM-YYYY')}}</div>
+              <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -148,45 +135,24 @@
                 color="secondary"
                 @click="selectedOpen = false"
               >
-                Ok
+                Cancel
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
       </v-sheet>
     </v-col>
-    <v-snackbar
-                v-model="snackbar"
-                :timeout="timeout"
-                >
-                {{ erroMsg }}
-
-                <template v-slot:action="{ attrs }">
-                    <v-btn
-                    color="blue"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar = false"
-                    >
-                    Close
-                    </v-btn>
-                </template>
-        </v-snackbar>
   </v-row>
 </template>
 
 <script>
 import {db} from '../main'
-
   export default {
-    name:'Calendar',
+    name:'Calendar2',
     props:['grupo'],
     data: () => ({
-      snackbar: false,
-      erroMsg:'',
-      timeout: 3000,
-      today:Date.now(),
-      focus: '',
+      today:new Date().toISOString().substr(0,10),
+      focus: new Date().toISOString().substr(0,10),
       type: 'month',
       typeToLabel: {
         month: 'Mes',
@@ -205,14 +171,8 @@ import {db} from '../main'
       name:null,
       details:null,
       dialog:false,
-      radioGroup:'medio'
     }),
     computed: {
-      
-      currentUser(){
-        let user = JSON.parse(localStorage.getItem('user-email'));
-        return user;
-      },
       title () {
         const { start, end } = this
         if (!start || !end) {
@@ -246,35 +206,28 @@ import {db} from '../main'
           timeZone: 'UTC', month: 'long',
         })
       },
-      colorCurso(){
-        if(this.radioGroup =='facil'){
-          return "#25B8A8";
-        }
-        else if(this.radioGroup=="medio"){
-          return "#3A6994";
-        }
-        else {
-          return "#E06962"
-        }
-      }
     },
     created(){
       this.getEvents();
     },
     mounted () {
-      this.$refs.calendar.checkChange();
-      this.getEventsRealTime();
+      //this.$refs.calendar.checkChange();
+      //this.getEventsRealTime();
     },
     methods: {
         async getEvents(){
+            console.log("llegueee")
+            
             try {
-                const snapshot = await db.collection(this.grupo).get();
+                const snapshot = await db.collection('quintosec').doc('H4wusNc8dVuMlslURwJW').collection('reporte').get();
                 const events=[];
+                console.log(snapshot);
                 snapshot.forEach(doc=>{
-                    //console.log(doc.data());
+                    console.log(doc.data());
                     let eventoData = doc.data()
                     eventoData.id = doc.id;
-                    events.push(eventoData);
+                    console.log(eventoData.id)
+                    //events.push(eventoData);
                 })
                 this.events = events;
             } catch (error) {
@@ -318,33 +271,26 @@ import {db} from '../main'
 
         async addTarea(){
             try {
-              this.dialog=false;
-                if(!!this.name && !!this.start && !!this.end ){
+                if(this.name && this.start &&this.end){
                     await db.collection(this.grupo).add({
                         name:this.name,
                         start:this.start,
                         end:this.end,
-                        color:this.colorCurso,
-                        author:this.currentUser,
+                        color:this.color
                     })
 
                     this.getEvents();
                     this.name=null;
                     this.start = null;
                     this.end = null;
-                    this.color = null;
-                    this.erroMsg ="Datos guardados correctamente";
-                    this.snackbar = true;
-                    
+                    this.color = "#43B684";
 
                 }   
                 else{
-                    this.erroMsg ="Complete todos los campos por favor :)";
-                    this.snackbar = true;
+                    console.log("datos obligatorios")
                 }
             } catch (error) {
-                this.erroMsg =error;
-                    this.snackbar = true;
+                console.log(error)
             }
         },
 
@@ -380,13 +326,33 @@ import {db} from '../main'
 
         nativeEvent.stopPropagation()
       },
-      updateRange ({ start, end }) {
-        
+      /*updateRange ({ start, end }) {
+        const events = []
+
+        const min = new Date(`${start.date}T00:00:00`)
+        const max = new Date(`${end.date}T23:59:59`)
+        const days = (max.getTime() - min.getTime()) / 86400000
+        const eventCount = this.rnd(days, days + 20)
+
+        for (let i = 0; i < eventCount; i++) {
+          const allDay = this.rnd(0, 3) === 0
+          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
+          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+          const second = new Date(first.getTime() + secondTimestamp)
+
+          events.push({
+            name: this.names[this.rnd(0, this.names.length - 1)],
+            start: this.formatDate(first, !allDay),
+            end: this.formatDate(second, !allDay),
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+          })
+        }
 
         this.start = start
         this.end = end
-        
-      },
+        this.events = events
+      },*/
       nth (d) {
         return d > 3 && d < 21
           ? 'th'
