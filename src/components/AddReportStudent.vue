@@ -22,7 +22,7 @@
                         <v-col>
                             <v-text-field type="date" label="Fecha" v-model="fecha"></v-text-field>
                             <v-text-field type="time" label="Hora aproximada" v-model="hora"></v-text-field>
-                            <v-text-field type="text" label="Nombre del docente" v-model="docente"></v-text-field>
+                           <!-- <v-text-field type="text" label="Nombre del docente" v-model="docente"></v-text-field>-->
                             <v-text-field type="text" label="Curso" v-model="curso"></v-text-field>
                             <v-textarea
                                 clearable
@@ -80,14 +80,21 @@ export default {
         descripcion:"",
         
     }),
+    computed:{
+        currentUser(){
+        let user = JSON.parse(localStorage.getItem('user-email'));
+        return user;
+      },
+    },
     methods:{
         async addReport(){
             try {
-                if(this.fecha && this.hora &&this.docente&&this.curso&&this.descripcion){
+                if(this.fecha && this.hora&&this.curso&&this.descripcion){
+                    this.dialog = false;
                     await db.collection(this.grupo).doc(this.id).collection('reporte').add({
                         curso:this.curso,
                         descripcion:this.descripcion,
-                        docente:this.docente,
+                        docente:this.currentUser,
                         fechayhora:this.fecha+' '+this.hora
                     })
 
@@ -100,7 +107,7 @@ export default {
                     this.$emit('refresh_data')
                     this.erroMsg ="Datos guardados correctamente";
                     this.snackbar = true;
-                    this.dialog = false;
+                    
                 }   
                 else{
                     this.erroMsg ="Complete todos los campos por favor :)";

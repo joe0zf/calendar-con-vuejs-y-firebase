@@ -2,7 +2,7 @@
     <div>
         <v-card>
             <v-card-title>
-                Reporte de tareas de primero A de secundaria 
+                Reporte de tareas del 1ro - A de secundaria 
             </v-card-title>
             <v-card-subtitle>Dificultad de la tarea asignada
                 <v-chip color="#25B8A8" dark>Fácil</v-chip>
@@ -22,11 +22,11 @@
             </v-container>
         </v-card>
         <v-card>
-            <v-card-title>Observaciones a alumnos  <add-student gradoysec="quintosec"/></v-card-title>
+            <v-card-title>Observaciones a alumnos  <add-student gradoysec="primeroasec"/></v-card-title>
             <v-container>
                 <v-row justify="center">
                     <v-col md="10">
-                        <students grado="quintosec"/>
+                        <students grado="primeroasec"/>
                     </v-col>
                 </v-row>
             </v-container>

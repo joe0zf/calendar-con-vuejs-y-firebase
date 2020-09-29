@@ -106,7 +106,8 @@
                                   ></v-radio>
                                 </v-radio-group>
                                 
-                                <v-btn type="submit" color="green" dark block @click.stop="addTarea()" >Agregar</v-btn>
+                                <v-btn type="submit" color="green" block dark  @click.stop="addTarea()" >Agregar</v-btn>
+                                <v-btn type="submit" color="red"  class="mt-5" block outlined  @click.stop="dialog = false" >Cancelar</v-btn>
                             </div>
                         </v-col>
                     </v-row>

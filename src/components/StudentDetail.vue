@@ -27,14 +27,14 @@
                     </v-toolbar-items>
                     </v-toolbar>
                     <v-container>
-                        <v-card-title>Reporte de incidencias  <add-report-student :id="idstudent" grupo="quintosec" @refresh_data="getEvents"/> </v-card-title>
+                        <v-card-title>Reporte de incidencias  <add-report-student :id="idstudent" :grupo="grupo" @refresh_data="getEvents"/> </v-card-title>
                         <v-row>
                             <v-col>
                                 <v-simple-table fixed-header height="400px">
                                     <template v-slot:default>
                                     <thead>
                                         <tr>
-                                        <th class="text-left">Fecha</th>
+                                        <th class="text-left">Hora y fecha</th>
                                         <th class="text-left">Descripción</th>
                                         <th class="text-left">Docente</th>
                                         <th class="text-left">Curso</th>
@@ -42,7 +42,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="item in reportes" :key="item.id">
-                                        <td>{{ item.fechayhora }}</td>
+                                        <td>{{ item.fechayhora | moment("HH:mm / DD-MM-YYYY") }}</td>
                                         <td>{{ item.descripcion }}</td>
                                         <td>{{ item.docente }}</td>
                                         <td>{{ item.curso }}</td>
@@ -77,7 +77,11 @@ export default {
         widgets: false,
         reportes: []
     }),
+    computed:{
+        
+    },
     methods:{
+        
         async getEvents(){
             //console.log("llegueee")
             

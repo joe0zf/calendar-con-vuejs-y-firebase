@@ -132,7 +132,11 @@
 
                     <v-list-item-title>Quinto</v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                    
 
+                    <v-list-item-title>@cramertech</v-list-item-title>
+                </v-list-item>
 
                 </v-list>
             </v-navigation-drawer>
@@ -195,9 +199,6 @@ export default {
     components:{
     },
     methods:{
-        urlSubItem(e){
-            alert(e);
-        },
         ruta(r){
             if(r=='panel')
             {
