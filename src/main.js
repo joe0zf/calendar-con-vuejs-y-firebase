@@ -10,13 +10,13 @@ import 'firebase/firestore';
 Vue.use(require('vue-moment'));
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXj2xGLPIGZkH1c2WdjnFWraa2vdddgIw",
-    authDomain: "reporte-tareas-40d34.firebaseapp.com",
-    databaseURL: "https://reporte-tareas-40d34.firebaseio.com",
-    projectId: "reporte-tareas-40d34",
-    storageBucket: "reporte-tareas-40d34.appspot.com",
-    messagingSenderId: "495352698282",
-    appId: "1:495352698282:web:cd388403065338df4c47d3"
+  apiKey: "################################",
+    authDomain: "###########################",
+    databaseURL: "###############################",
+    projectId: "######################4",
+    storageBucket: "###########",
+    messagingSenderId: "###############",
+    appId: ":w#####################"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
